@@ -1,0 +1,27 @@
+@media (min-width: 1200px) {
+    .container {
+        width: 1024px !important;
+    }
+}
+
+.header-v8 .navbar-nav > li > a {
+    font-weight: 500;
+}
+
+body.header-fixed-space-v2 {
+    padding-top: 95px;
+}
+
+.tags-v2 li a {
+    font-size: 11px;
+}
+
+.grid-boxes-caption h2 {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.blog_masonry_3col h3 {
+    font-size: 14px;
+    line-height: 20px;
+}

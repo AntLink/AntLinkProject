@@ -1,0 +1,346 @@
+{% extends 'layout/base.html' %}
+{% load i18n prontand_tag admin_static widget humanize %}
+{% block title %} {{ name|capfirst }}{% endblock %}
+{% block meta_description %}{{ description|striptags|truncatewords:25 }}{% endblock %}
+{% block meta_author %}{{ title }}{% endblock %}
+{% block keywords %}{{ name|lower }}{% endblock %}
+{% block head %}
+    {% if post == 'page' %}
+        {% if cform == 'contact' %}
+            <link rel="stylesheet" href="{% static 'assets/order/plugins/sky-forms-pro/skyforms/css/sky-forms.min.css' %}">
+            <link rel="stylesheet" href="{% static 'assets/order/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.min.css' %}">
+        {% endif %}
+        {% for page_type in data %}
+            {% if page_type.page == 'home' %}
+                {#                <link rel="stylesheet" href="{% static 'assets/plugins/master-slider/masterslider/style/masterslider.min.css' %}">#}
+                {#                <link rel="stylesheet" href="{% static 'assets/plugins/master-slider/masterslider/skins/black-2/style.min.css' %}">#}
+            {% endif %}
+            {% if page_type.page == 'contact' %}
+                <link rel="stylesheet" href="{% static 'assets/order/plugins/sky-forms-pro/skyforms/css/sky-forms.min.css' %}">
+                <link rel="stylesheet" href="{% static 'assets/order/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.min.css' %}">
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+{% block breadcrumbs %}
+    {% if post == 'page' %}
+        {% if cform == 'contact' %}
+            <!--=== Breadcrumbs ===-->
+            {#            <div class="breadcrumbs">#}
+            {#                <div class="container">#}
+            {#                    <h1 class="pull-left">{% trans 'Contact' %}</h1>#}
+            {#                    <ul class="pull-right breadcrumb">#}
+            {#                        <li><a href="{% url 'home' %}">Home</a></li>#}
+            {#                        <li class="active">{% trans 'Contact' %}</li>#}
+            {#                    </ul>#}
+            {#                </div>#}
+            {#            </div>#}
+            <!--=== End Breadcrumbs ===-->
+        {% endif %}
+        {% for page_type in data %}
+            {% if page_type.page == 'contact' %}
+                {#                <div class="breadcrumbs-v1" style=" background: url('/media/image/{{ page_type.image }}') center no-repeat; background-size: 100%">#}
+                <div class="breadcrumbs-v1" style=" background: url('/media/image/{{ page_type.image }}') center no-repeat; background-size: 100%">
+                    <div class="container">
+                        <h1>{{ name|capfirst }}</h1>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% if post == 'post' %}
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">{{ name|capfirst }}</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li class="active">{{ name|capfirst }}</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endif %}
+
+{% endblock %}
+{% block slider %}
+    {% if post == 'page' %}
+        {% for page_type in data %}
+            {% if page_type.page == 'home' %}
+                {% home_slider %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+{% block container %}
+    {% if post == 'post' %}
+        <div class="container content-sm" style="padding-top: 20px;">
+            <div class="row">
+                <div class="col-md-9">
+                    {% for v in data %}
+                        {% if v.type == 'post' %}
+                            {% if v.page == 'post' %}
+                                <div class="row margin-bottom-20">
+                                    <div class="col-sm-5 sm-margin-bottom-20">
+                                        <div class="easy-block-v1">
+                                            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                                <div class="carousel-inner thumbnails thumbnail-style thumbnail-kenburn">
+                                                    <div class="item active">
+                                                        <a href="{% url 'post-detail' slug v.slug %}">
+                                                            <img src="/media/image/thumbnail/512x288/{{ v.image }}" class="img-responsive">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7 news-v3">
+                                        <div class="news-v3-in-sm no-padding">
+                                            <ul class="list-inline posted-info">
+                                                <li>By {{ v.user.first_name }} {{ v.user.last_name }}</li>
+                                                <li>{{ v.get_category_name_with_url_first|safe }}</li>
+                                                <li>{{ v.created_at|date }}</li>
+                                            </ul>
+                                            <h2><a href="{% url 'post-detail' slug v.slug %}">{{ v.title }}</a></h2>
+                                            <p>{{ v.content|striptags|truncatewords:30 }}</p>
+                                            <a href="{% url 'post-detail' slug v.slug %}">{% trans 'Read More' %}</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endif %}
+                            {% if v.page == 'hotel' %}
+                                <div class="row margin-bottom-20">
+                                    <div class="col-sm-5 sm-margin-bottom-20">
+                                        <div class="easy-block-v1">
+                                            <div class="star-vote pull-left" style="font-size:18px;margin-top: 10px; position: absolute; right: 5px; z-index: 1;">
+
+                                                {% for i in v.word_meta|show_setting_value:'star'|get_range %}
+                                                    <i class="color-green fa fa-star"></i>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="easy-block-v1-badge rgba-blue">RP. {{ v.word_meta|show_setting_value:'price'|intcomma }},00</div>
+
+                                            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                                <div class="carousel-inner thumbnails thumbnail-style thumbnail-kenburn">
+                                                    <div class="item active">
+                                                        <a href="{% url 'post-detail' slug v.slug %}">
+                                                            <img src="/media/image/thumbnail/512x288/{{ v.image }}" class="img-responsive">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7 news-v3">
+                                        <div class="news-v3-in-sm no-padding">
+                                            <h2><a href="{% url 'post-detail' slug v.slug %}">{{ v.title }}</a></h2>
+                                            <p>{{ v.content|striptags|truncatewords:15 }}</p>
+                                            <blockquote>
+                                                <p>{{ v.word_meta|show_setting_value:'address' }}</p>
+                                            </blockquote>
+                                            <a href="{% url 'post-detail' slug v.slug %}">{% trans 'Read More' %}</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endif %}
+                            {% if v.page == 'tour_package' %}
+                                <div class="row margin-bottom-20">
+                                    <div class="col-sm-5 sm-margin-bottom-20">
+                                        <div class="easy-block-v1">
+                                            <div class="easy-block-v1-badge rgba-blue">RP. {{ v.word_meta|show_setting_value:'price'|intcomma }},00</div>
+
+                                            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                                <div class="carousel-inner thumbnails thumbnail-style thumbnail-kenburn">
+                                                    <div class="item active">
+                                                        <a href="{% url 'post-detail' slug v.slug %}">
+                                                            <img src="/media/image/thumbnail/512x288/{{ v.image }}" class="img-responsive">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7 news-v3">
+                                        <div class="news-v3-in-sm no-padding">
+                                            <h2><a href="{% url 'post-detail' slug v.slug %}">{{ v.title }}</a></h2>
+                                            <p>{{ v.content|striptags|truncatewords:30 }}</p>
+                                            <a href="{% url 'post-detail' slug v.slug %}">{% trans 'Read More' %}</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endif %}
+                            {% if v.page == 'rentcar' %}
+                                <div class="row margin-bottom-20">
+                                    <div class="col-sm-5 sm-margin-bottom-20">
+                                        <div class="easy-block-v1">
+                                            <div class="easy-block-v1-badge rgba-blue">RP. {{ v.word_meta|show_setting_value:'price'|intcomma }},00</div>
+
+                                            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                                <div class="carousel-inner thumbnails thumbnail-style thumbnail-kenburn">
+                                                    <div class="item active">
+                                                        <a href="{% url 'post-detail' slug v.slug %}">
+                                                            <img src="/media/image/thumbnail/512x288/{{ v.image }}" class="img-responsive">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7 news-v3">
+                                        <div class="news-v3-in-sm no-padding">
+                                            <h2><a href="{% url 'post-detail' slug v.slug %}">{{ v.title }}</a></h2>
+                                            <p>{{ v.content|striptags|truncatewords:30 }}</p>
+                                            <a href="{% url 'post-detail' slug v.slug %}">{% trans 'Read More' %}</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if pagecount >= perpage %}
+                        <ul class="pager pager-v4">
+                            <li class="previous">
+                                {% if data.has_previous %}
+                                    <a class="" href="?page={{ data.previous_page_number }}">Previous</a>
+                                {% else %}
+                                    <a class=" disabled-link" href="javascript:;">Previous</a>
+                                {% endif %}
+                            </li>
+
+
+                            <li class="page-amount">
+                                {{ data.number }} of {{ data.paginator.num_pages }}.
+                            </li>
+
+                            <li class="next">
+                                {% if data.has_next %}
+                                    <a class="" href="?page={{ data.next_page_number }}">Next</a>
+                                {% else %}
+                                    <a class="" href="javascript:;">Next</a>
+                                {% endif %}
+                            </li>
+
+                        </ul>
+                    {% endif %}
+                </div>
+                <div class="col-md-3">
+                    {% widget_sidebar %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if post == 'page' %}
+        {% if cform == 'contact' %}
+            <div class="container content-sm" style="padding-top: 0">
+                {% include 'prontend/page/contact.html' with content=v.content %}
+            </div>
+        {% endif %}
+
+        {% for v in data %}
+            {% if v.page == 'privacy' %}
+                <div class="container content-sm">
+                    {% include 'prontend/page/privacy.html' with content=v.content %}
+                </div>
+            {% endif %}
+            {% if v.page == 'user_profile' %}
+                <div class="container content-sm">
+                    {% include 'prontend/page/user_profil.html' with content=v.content %}
+                </div>
+            {% endif %}
+            {% if v.page == 'company_profile' %}
+                <div class="container content-sm">
+                    {% include 'prontend/page/company_profil.html' with content=v.content %}
+                </div>
+            {% endif %}
+            {% if v.page == 'contact' or cform == 'contact' %}
+                <div class="container content-sm" style="padding-top: 0">
+                    {{ cform }}
+                    {% include 'prontend/page/contact.html' with content=v.content %}
+                </div>
+            {% endif %}
+            {% if v.page == 'home' %}
+                <div class="container content-sm no-padding-bottom" style="padding-top: 0">
+                    {% home_content %}
+                </div>
+            {% endif %}
+            {% if v.page == None or v.page == '' %}
+                <div class="container content-sm">
+                    <div class="row">
+                        <div class="col-md-12 md-margin-bottom-50">
+                            {{ v.content|safe }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
+
+{% block footer %}
+    {% if post == 'page' %}
+        {% if cform == 'contact' %}
+            <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+            <script type="text/javascript" src="{% static 'assets/order/plugins/gmap/gmap.min.js' %}"></script>
+            <script>
+                new GMaps({
+                    div: '#map',
+                    lat: -8.575149,
+                    lng: 116.102976,
+                    zoom: 15,
+                }).addMarker({
+                    lat: -8.575149,
+                    lng: 116.102976,
+                    title: 'Jl Udayana Eka Jaya No.1 Mataram ',
+                    infoWindow: {
+                        content: '<h5>Nuraksa Tour And Travel</h5>' +
+                        '<p>Jl Udayana Eka Jaya No.1 Mataram</p>'
+                    },
+
+                });
+            </script>
+        {% endif %}
+        {% for page_type in data %}
+            {% if page_type.page == 'home' %}
+                {#                <script src="{% static 'assets/plugins/master-slider/masterslider/masterslider.min.js' %}"></script>#}
+                {#                <script src="{% static 'assets/plugins/master-slider/masterslider/jquery.easing.min.js' %}"></script>#}
+                {#                <script src="{% static 'assets/js/plugins/master-slider-showcase4.js' %}"></script>#}
+                {#                <script>#}
+                {#                    jQuery(document).ready(function () {#}
+                {#                        MasterSliderShowcase4.initMasterSliderShowcase4();#}
+                {#                    });#}
+                {#                </script>#}
+            {% endif %}
+            {% if page_type.page == 'contact' %}
+                <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+                <script type="text/javascript" src="{% static 'assets/order/plugins/gmap/gmap.min.js' %}"></script>
+                <script>
+                    new GMaps({
+                        div: '#map',
+                        lat: -8.575149,
+                        lng: 116.102976,
+                        zoom: 15,
+                    }).addMarker({
+                        lat: -8.575149,
+                        lng: 116.102976,
+                        title: 'Jl Udayana Eka Jaya No.1 Mataram ',
+                        infoWindow: {
+                            content: '<h5>Nuraksa Tour And Travel</h5>' +
+                            '<p>Jl Udayana Eka Jaya No.1 Mataram</p>'
+                        },
+
+                    });
+                </script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

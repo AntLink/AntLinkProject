@@ -1,0 +1,54 @@
+{% extends 'layout/base.html' %}
+
+{% load admin_static prontand_tag %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/pages/blog_masonry_3col.css' %}">
+{% endblock %}
+
+{% block breadcrumbs %}
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Home</h1>
+            </div>
+        </div>
+{% endblock %}
+{% block container %}
+    <div class="blog_masonry_3col">
+        <div class="container content-sm">
+            <div class="row">
+                <div class="col-sm-9 grid-boxes">
+                    {% for v in post %}
+                        <div class="grid-boxes-in">
+                            <a href="{% url 'post-detail' v.get_category_slug_first v.slug %}">
+                                <div class="easy-block-v1">
+                                    <img class="img-responsive" src="/media/image/thumbnail/256x144/{{ v.image }}" alt="{{ v.title }}">
+                                    <div class="easy-block-v1-badge rgba-blue">{{ v.get_category_name_first }}</div>
+                                </div>
+
+                            </a>
+                            <div class="grid-boxes-caption">
+                                <h2><a href="{% url 'post-detail' v.get_category_slug_first v.slug %}">{{ v.title }}</a></h2>
+                                <p>{{ v.content|striptags|truncatewords:30 }}</p>
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-3">
+                    {% widget_sidebar %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <script src="{% static 'plugins/masonry/jquery.masonry.min.js' %}"></script>
+    <script src="{% static 'js/pages/blog-masonry.js' %}"></script>
+
+    <script>
+        jQuery(document).ready(function () {
+            {#            MasterSliderShowcase3.initMasterSliderShowcase3();#}
+        });
+    </script>
+{% endblock %}

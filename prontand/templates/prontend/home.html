@@ -1,0 +1,29 @@
+{% extends 'layout/base.html' %}
+{% load admin_static prontand_tag %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/home.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/master-slider/masterslider/style/masterslider.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/master-slider/masterslider/skins/black-2/style.min.css' %}">
+{#    <link rel="stylesheet" href="{% static 'order/css/pages/page_job.min.css' %}">#}
+{% endblock %}
+
+
+{% block slider %}
+    {% home_slider %}
+{% endblock %}
+{% block container %}
+    <div class="container content-sm no-padding-bottom" style="padding-top: 0">
+        {% home_content %}
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <script src="{% static 'plugins/master-slider/masterslider/masterslider.min.js' %}"></script>
+    <script src="{% static 'plugins/master-slider/masterslider/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/plugins/master-slider-showcase3.min.js' %}"></script>
+    <script>
+        jQuery(document).ready(function () {
+            MasterSliderShowcase3.initMasterSliderShowcase3();
+        });
+    </script>
+{% endblock %}

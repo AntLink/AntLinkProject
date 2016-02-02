@@ -1,0 +1,143 @@
+{% load i18n prontand_tag widget humanize %}
+{#{% for v in widget %}#}
+{#    <div class="row">#}
+{#        <div class="col-sm-12">#}
+{#            <h2 class="title-v4" style="border-bottom: 3px solid {{ v.setting|show_setting_value:'border_color' }}; color: {{ v.setting|show_setting_value:'border_color' }};">{{ v.custom_name }}</h2>#}
+{#            <div class="row margin-bottom-50">#}
+{#                {% for post in v.setting|show_setting_value:'category'|post_data:v.setting %}#}
+{#                    <div class="col-sm-4 sm-margin-bottom-50">#}
+{#                        <div class="blog-grid">#}
+{#                            <img class="img-responsive" src="/media/image/thumbnail/512x288/{{ post.image }}"/>#}
+{#                            <h3><a style="color: {{ v.setting|show_setting_value:'border_color' }};" href="{% url 'post-detail' post.get_category_slug_first post.slug %}">{{ post.title }}</a></h3>#}
+{#                            <ul class="blog-grid-info">#}
+{#                                <li>Richard Garner</li>#}
+{#                                <li>v.creted_at|date</li>#}
+{#                            </ul>#}
+{#                            <p>{{ post.content|striptags|truncatewords:18 }}</p>#}
+{#                            <a class="r-more" href="{% url 'post-detail' post.get_category_slug_first post.slug %}" style="color: {{ v.setting|show_setting_value:'border_color' }}; border-bottom: 1px solid {{ v.setting|show_setting_value:'border_color' }};">Read More</a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#{% endfor %}#}
+
+{% for v in widget %}
+    {% if v.setting|show_setting_value:'display' == 'home_content' %}
+        <div class="row">
+            <div class="col-sm-12">
+                {% if v.setting|show_setting_value:'show_title' == 'yes' %}
+                    <div class="headline">
+                        <h2 style="border-bottom: 3px solid {{ v.setting|show_setting_value:'border_color' }}; color: {{ v.setting|show_setting_value:'border_color' }};">{{ v.custom_name }}</h2>
+                    </div>
+                {% endif %}
+                <div class="row news-v2 margin-bottom-5 margin-top-20">
+                    {% for post in v.setting|show_setting_value:'category'|post_data:v.setting %}
+                        <div class="col-md-4 col-sm-6">
+                            <div class="thumbnails thumbnail-style thumbnail-kenburn">
+                                <div class="news-v2-badge">
+                                    <div class="overflow-hidden">
+                                        <a href="{% url 'post-detail' post.get_category_slug_first post.slug %}">
+                                            <img class="img-responsive" src="/media/image/thumbnail/512x288/{{ post.image }}" alt="{{ post.title }}">
+                                        </a>
+                                    </div>
+                                    <a class="btn-more hover-effect" href="{% url 'post-detail' post.get_category_slug_first post.slug %}" style="background: {{ v.setting|show_setting_value:'border_color' }};">RP. {{ post.word_meta|show_setting_value:'price'|intcomma }},00</a>
+                                </div>
+                                <div class="news-v2-desc bg-color-light">
+                                    <h3><a style="color: {{ v.setting|show_setting_value:'border_color' }};" class="hover-effect" href="{% url 'post-detail' post.get_category_slug_first post.slug %}">{{ post.title }}</a></h3>
+                                    <p>{{ post.content|striptags|truncatewords:15 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if v.setting|show_setting_value:'display' == 'media' %}
+
+        <div class="container-fluid bg-color-darker margin-bottom-10">
+
+            <div class="row equal-height-columns no-gutter">
+                {% if v.setting|show_setting_value:'show_title' == 'yes' %}
+                    <div class="heading heading-v1">
+                        <h2 style="color: #fff;">{{ v.custom_name }}</h2>
+                    </div>
+                {% endif %}
+                {% for post in v.setting|show_setting_value:'category'|post_data:v.setting %}
+                    <div class="col-md-6 col-sm-6 md-margin-bottom-40" style="height: 371px;">
+                        <div class="easy-block-v1">
+                            <div class="star-vote pull-left" style="font-size:18px; margin-top: 10px; position: absolute; right: 5px; z-index: 1;">
+                                    {% for i in post.word_meta|show_setting_value:'star'|get_range %}
+                                       <i class="color-green fa fa-star" style="color: {{ v.setting|show_setting_value:'border_color' }}"></i>
+                                    {% endfor %}
+                            </div>
+                            <div class="easy-block-v1-badge rgba-default" style="background-color:{{ v.setting|show_setting_value:'border_color' }}">RP. {{ post.word_meta|show_setting_value:'price'|intcomma }},00</div>
+
+                            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner thumbnails thumbnail-style thumbnail-kenburn">
+                                    <a href="{% url 'post-detail' post.get_category_slug_first post.slug %}">
+                                        <div class="item active">
+                                            <img alt="" src="/media/image/thumbnail/512x288/{{ post.image }}">
+                                        </div>
+                                    </a>
+                                    <div class="easy-block-v1 rgba-default" style="padding:10px; background-color:{{ v.setting|show_setting_value:'border_color' }}">
+                                        <h2><a style="color: #fff;" class="hover-effect " href="{% url 'post-detail' post.get_category_slug_first post.slug %}">{{ post.title }}</a></h2>
+                                        <p style="color: #fff;">{{ post.word_meta|show_setting_value:'address' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        {#        <div class="row high-rated margin-bottom-20">#}
+        {##}
+        {#            {% for post in v.setting|show_setting_value:'category'|post_data:v.setting %}#}
+        {#                <!-- Easy Block -->#}
+        {#                <div class="col-md-6 col-sm-6 md-margin-bottom-40">#}
+        {#                    <div class="easy-block-v1">#}
+        {#                        <div class="star-vote pull-left" style="margin-top: 10px; position: absolute; right: 5px; z-index: 1;">#}
+        {#                            <ul class="list-inline">#}
+        {#                                {% for i in post.word_meta|show_setting_value:'star'|get_range %}#}
+        {#                                    <li><i class="color-green fa fa-star" style="color: {{ v.setting|show_setting_value:'border_color' }}"></i></li>#}
+        {#                                {% endfor %}#}
+        {#                            </ul>#}
+        {#                        </div>#}
+        {#                        <div class="easy-block-v1-badge rgba-default" style="background-color:{{ v.setting|show_setting_value:'border_color' }}">RP. {{ post.word_meta|show_setting_value:'price'|intcomma }},00</div>#}
+        {##}
+        {#                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">#}
+        {#                            <div class="carousel-inner thumbnails thumbnail-style thumbnail-kenburn">#}
+        {#                                <a href="{% url 'post-detail' post.get_category_slug_first post.slug %}">#}
+        {#                                    <div class="item active">#}
+        {#                                        <img alt="" src="/media/image/thumbnail/512x288/{{ post.image }}">#}
+        {#                                    </div>#}
+        {#                                </a>#}
+        {#                                <div class="easy-block-v1 rgba-default" style="padding:10px; background-color:{{ v.setting|show_setting_value:'border_color' }}">#}
+        {#                                    <a style="color: #fff;" class="hover-effect " href="{% url 'post-detail' post.get_category_slug_first post.slug %}">{{ post.title }}</a>#}
+        {#                                </div>#}
+        {#                            </div>#}
+        {#                        </div>#}
+        {#                        <div class="overflow-h">#}
+        {#                            <div class="star-vote pull-right">#}
+        {#                                <ul class="list-inline">#}
+        {#                                    {% for i in post.word_meta|show_setting_value:'star'|get_range %}#}
+        {#                                        <li><i class="color-green fa fa-star" style="color: {{ v.setting|show_setting_value:'border_color' }}"></i></li>#}
+        {#                                    {% endfor %}#}
+        {#                                </ul>#}
+        {#                            </div>#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#                <!-- End Easy Block -->#}
+        {#            {% endfor %}#}
+        {##}
+        {#        </div>#}
+    {% endif %}
+{% endfor %}

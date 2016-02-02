@@ -1,0 +1,55 @@
+{% load i18n prontand_tag widget admin_static humanize %}
+<div class="container content-sm">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="margin-bottom-10">
+                <div class="news-v3 bg-color-light margin-bottom-30">
+                    <img src="/media/image/thumbnail/848x309/{{ object.image }}" class="img-responsive full-width">
+                    <div class="news-v3-in">
+                        <ul class="list-inline posted-info">
+                            <li>By {{ object.user.first_name }} {{ object.user.last_name }}</li>
+                            <li>{{ object.get_category_name_with_url_first|safe }}</li>
+                            <li>{{ object.created_at|date }}</li>
+                        </ul>
+                        <h2>{{ object.title }}</h2>
+                        {{ object.content|safe }}
+                    </div>
+
+                </div>
+                <br>
+                <!-- Blog Grid Tagds -->
+                <ul class="list-inline tags-v2">
+                    {{ object.tags_with_pront_li_tag|safe }}
+                </ul>
+
+                <!-- Blog Thumb v4 -->
+                <div class="margin-bottom-50">
+                    <div class="headline">
+                        <h2>Rekomendasi</h2>
+                    </div>
+
+                    <div class="row news-v2 margin-bottom-50">
+                        {% for related in object.self_relationships.all|dictsortreversed:"created_at"|slice:"3" %}
+                            <div class="col-sm-4 col-xs-6 sm-margin-bottom-30 ">
+                                <div class="news-v2-badge">
+                                    <a href="{% url 'post-detail' related.get_category_slug_first related.slug %}">
+                                        <img class="img-responsive" src="/media/image/thumbnail/256x144/{{ related.image }}" alt="{{ related.title }}">
+                                    </a>
+                                </div>
+                                <div class="news-v2-desc  bg-color-light">
+                                    <h5><a href="{% url 'post-detail' related.get_category_slug_first related.slug %}">{{ related.title }}</a></h5>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!--/end row-->
+                </div>
+                <!-- End Blog Thumb v4 -->
+            </div>
+        </div>
+        <div class="col-md-3">
+            {% widget_sidebar %}
+        </div>
+    </div>
+</div>
+</div>
