@@ -2,50 +2,66 @@
 <div class="container content-sm">
     <div class="row">
         <div class="col-md-9">
-            <div class="margin-bottom-10">
-                <div class="news-v3 bg-color-light margin-bottom-30">
-                    <img src="/media/image/thumbnail/848x309/{{ object.image }}" class="img-responsive full-width">
-                    <div class="news-v3-in">
-                        <ul class="list-inline posted-info">
-                            <li>By {{ object.user.first_name }} {{ object.user.last_name }}</li>
-                            <li>{{ object.get_category_name_with_url_first|safe }}</li>
-                            <li>{{ object.created_at|date }}</li>
-                        </ul>
-                        <h2>{{ object.title }}</h2>
-                        {{ object.content|safe }}
-                    </div>
-
+            <div class="news-v3 bg-color-light margin-bottom-10">
+                <img src="/media/image/thumbnail/848x309/{{ object.image }}" class="img-responsive full-width">
+                <div class="news-v3-in">
+                    <ul class="list-inline posted-info">
+                        <li>Oleh {{ object.user.first_name }} {{ object.user.last_name }}</li>
+                        <li>{{ object.get_category_name_with_url_first|safe }}</li>
+                        <li>{{ object.created_at|date }}</li>
+                    </ul>
+                    <h2>{{ object.title }}</h2>
+                    {{ object.content|safe }}
                 </div>
-                <br>
-                <!-- Blog Grid Tagds -->
-                <ul class="list-inline tags-v2">
-                    {{ object.tags_with_pront_li_tag|safe }}
-                </ul>
 
-                <!-- Blog Thumb v4 -->
-                <div class="margin-bottom-50">
-                    <div class="headline">
-                        <h2>Rekomendasi</h2>
-                    </div>
+            </div>
 
-                    <div class="row news-v2 margin-bottom-50">
-                        {% for related in object.self_relationships.all|dictsortreversed:"created_at"|slice:"3" %}
-                            <div class="col-sm-4 col-xs-6 sm-margin-bottom-30 ">
-                                <div class="news-v2-badge">
-                                    <a href="{% url 'post-detail' related.get_category_slug_first related.slug %}">
-                                        <img class="img-responsive" src="/media/image/thumbnail/256x144/{{ related.image }}" alt="{{ related.title }}">
-                                    </a>
-                                </div>
-                                <div class="news-v2-desc  bg-color-light">
-                                    <h5><a href="{% url 'post-detail' related.get_category_slug_first related.slug %}">{{ related.title }}</a></h5>
+            <!-- Blog Grid Tagds -->
+            <ul class="list-inline tags-v2">
+                {{ object.tags_with_pront_li_tag|safe }}
+            </ul>
+
+            <!-- Blog Thumb v4 -->
+            <div class="margin-bottom-50">
+                <div class="headline">
+                    <h2>Rekomendasi</h2>
+                </div>
+
+                {% for v in object.self_relationships.all|dictsortreversed:"created_at"|slice:"3" %}
+
+
+                    <div class="row margin-bottom-20">
+                        <div class="col-sm-4 sm-margin-bottom-20">
+                            <div class="easy-block-v1">
+                                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner thumbnails thumbnail-style thumbnail-kenburn">
+                                        <div class="item active">
+                                            <a href="{% url 'post-detail' v.get_category_slug_first v.slug %}">
+                                                <img src="/media/image/thumbnail/512x288/{{ v.image }}" class="img-responsive">
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        {% endfor %}
+                        </div>
+                        <div class="col-sm-8 news-v3">
+                            <div class="news-v3-in-sm no-padding">
+                                <ul class="list-inline posted-info">
+                                    <li>Oleh {{ v.user.first_name }} {{ v.user.last_name }}</li>
+                                    <li>{{ v.get_category_name_with_url_first|safe }}</li>
+                                    <li>{{ v.created_at|date }}</li>
+                                </ul>
+                                <h2><a href="{% url 'post-detail' v.get_category_slug_first v.slug %}">{{ v.title }}</a></h2>
+                                <p>{{ v.content|striptags|truncatewords:20 }}</p>
+                                <a href="{% url 'post-detail' v.get_category_slug_first v.slug %}">{% trans 'Read More' %}</a>
+                            </div>
+                        </div>
                     </div>
-                    <!--/end row-->
-                </div>
-                <!-- End Blog Thumb v4 -->
+                    <hr>
+                {% endfor %}
+                <!--/end row-->
             </div>
+            <!-- End Blog Thumb v4 -->
         </div>
         <div class="col-md-3">
             {% widget_sidebar %}

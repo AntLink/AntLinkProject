@@ -25,3 +25,27 @@ body.header-fixed-space-v2 {
     font-size: 14px;
     line-height: 20px;
 }
+
+.content-sm {
+    padding-top: 20px;
+}
+
+.blog_masonry_3col .grid-boxes-in {
+    margin-bottom: 15px;
+}
+
+.news-v3 .news-v3-in {
+    padding: 25px 20px;
+}
+
+.news-v3 h2 {
+    font-size: 20px;
+    font-weight: 200;
+    margin: 0 0 5px;
+    line-height: 25px;
+    text-transform: uppercase;
+}
+
+.header-v6 {
+    box-shadow: 0 0 5px #bbb;
+}
